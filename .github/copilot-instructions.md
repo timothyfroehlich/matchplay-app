@@ -2,6 +2,8 @@
 
 This file provides context for the AI assistant based on the project's technical design document (`design.md`).
 
+Always use `design.md` as context.
+
 ## Core Technologies
 
 * **Language:** Kotlin
