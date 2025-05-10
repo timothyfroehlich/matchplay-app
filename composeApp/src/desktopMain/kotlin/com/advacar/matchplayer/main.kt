@@ -14,10 +14,5 @@ fun main() = application {
         modules(commonModule) // Add platform-specific modules if needed
     }
 
-    Window(
-        onCloseRequest = ::exitApplication,
-        title = "MatchPlayer",
-    ) {
-        App()
-    }
+    Window(onCloseRequest = ::exitApplication, title = "MatchPlayer") { App() }
 }

@@ -8,15 +8,10 @@ data class Tournament(
     val name: String,
     val status: String, // e.g., "active", "upcoming", "completed"
     val format: String, // e.g., "Group Match Play"
-    val dateStart: String? = null // ISO 8601 or similar
+    val dateStart: String? = null, // ISO 8601 or similar
 )
 
-@Serializable
-data class Player(
-    val playerId: String,
-    val firstName: String,
-    val lastName: String
-)
+@Serializable data class Player(val playerId: String, val firstName: String, val lastName: String)
 
 @Serializable
 data class Standing(
@@ -24,7 +19,7 @@ data class Standing(
     val playerName: String,
     val rank: Int,
     val points: Double,
-    val gamesPlayed: Int
+    val gamesPlayed: Int,
 )
 
 @Serializable
@@ -32,7 +27,7 @@ data class Round(
     val roundId: String,
     val name: String,
     val status: String, // e.g., "active", "completed", "upcoming"
-    val games: List<Game> = emptyList()
+    val games: List<Game> = emptyList(),
 )
 
 @Serializable
@@ -42,18 +37,14 @@ data class Game(
     val arenaId: String? = null,
     val playerIds: List<String> = emptyList(),
     val playerScores: List<PlayerScore> = emptyList(),
-    val status: String // e.g., "pending", "active", "completed"
+    val status: String, // e.g., "pending", "active", "completed"
 )
 
-@Serializable
-data class PlayerScore(
-    val playerId: String,
-    val score: Long
-)
+@Serializable data class PlayerScore(val playerId: String, val score: Long)
 
 @Serializable
 data class ScoreSuggestion(
     val gameId: String,
     val playerId: String, // Player for whom the score is being suggested
-    val score: Long
+    val score: Long,
 )

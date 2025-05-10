@@ -17,15 +17,13 @@ import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.headersOf
 import io.ktor.serialization.kotlinx.json.json
-import io.ktor.util.cio.toByteArray // For request.body.toByteArray()
 import io.ktor.utils.io.ByteReadChannel
-import kotlinx.coroutines.test.runTest
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertNotNull
+import kotlinx.coroutines.test.runTest
+import kotlinx.serialization.json.Json
 
 class MatchplayApiServiceImplTest {
 
@@ -36,24 +34,21 @@ class MatchplayApiServiceImplTest {
     }
 
     private fun createMockClient(mockEngine: MockEngine): HttpClient {
-        return HttpClient(mockEngine) {
-            install(ContentNegotiation) {
-                json(json)
-            }
-        }
+        return HttpClient(mockEngine) { install(ContentNegotiation) { json(json) } }
     }
 
     @Test
     fun `getTournaments success`() = runTest {
-        val mockTournaments = listOf(
-            Tournament("t1", "Tournament 1", "active", "Group Match Play", "2025-01-01"),
-            Tournament("t2", "Tournament 2", "upcoming", "Group Match Play", "2025-02-01")
-        )
+        val mockTournaments =
+            listOf(
+                Tournament("t1", "Tournament 1", "active", "Group Match Play", "2025-01-01"),
+                Tournament("t2", "Tournament 2", "upcoming", "Group Match Play", "2025-02-01"),
+            )
         val mockEngine = MockEngine { _ ->
             respond(
                 content = ByteReadChannel(json.encodeToString(mockTournaments)),
                 status = HttpStatusCode.OK,
-                headers = headersOf(HttpHeaders.ContentType, "application/json")
+                headers = headersOf(HttpHeaders.ContentType, "application/json"),
             )
         }
         val apiClient = MatchplayApiServiceImpl(createMockClient(mockEngine))
@@ -65,26 +60,22 @@ class MatchplayApiServiceImplTest {
     @Test
     fun `getTournaments error`() = runTest {
         val mockEngine = MockEngine { _ ->
-            respond(
-                content = ByteReadChannel("Error"),
-                status = HttpStatusCode.InternalServerError
-            )
+            respond(content = ByteReadChannel("Error"), status = HttpStatusCode.InternalServerError)
         }
         val apiClient = MatchplayApiServiceImpl(createMockClient(mockEngine))
-        assertFailsWith<Exception> {
-            apiClient.getTournaments()
-        }
+        assertFailsWith<Exception> { apiClient.getTournaments() }
     }
 
     @Test
     fun `getTournamentDetails success`() = runTest {
-        val mockTournament = Tournament("t1", "Detailed Tournament", "active", "Group Match Play", "2025-01-01")
+        val mockTournament =
+            Tournament("t1", "Detailed Tournament", "active", "Group Match Play", "2025-01-01")
         val mockEngine = MockEngine { request ->
             assertEquals("https://app.matchplay.events/api/tournaments/t1", request.url.toString())
             respond(
                 content = ByteReadChannel(json.encodeToString(mockTournament)),
                 status = HttpStatusCode.OK,
-                headers = headersOf(HttpHeaders.ContentType, "application/json")
+                headers = headersOf(HttpHeaders.ContentType, "application/json"),
             )
         }
         val apiClient = MatchplayApiServiceImpl(createMockClient(mockEngine))
@@ -95,16 +86,20 @@ class MatchplayApiServiceImplTest {
 
     @Test
     fun `getTournamentStandings success`() = runTest {
-        val mockStandings = listOf(
-            Standing("p1", "Player One", 1, 100.0, 5),
-            Standing("p2", "Player Two", 2, 90.0, 5)
-        )
+        val mockStandings =
+            listOf(
+                Standing("p1", "Player One", 1, 100.0, 5),
+                Standing("p2", "Player Two", 2, 90.0, 5),
+            )
         val mockEngine = MockEngine { request ->
-            assertEquals("https://app.matchplay.events/api/tournaments/t1/standings", request.url.toString())
+            assertEquals(
+                "https://app.matchplay.events/api/tournaments/t1/standings",
+                request.url.toString(),
+            )
             respond(
                 content = ByteReadChannel(json.encodeToString(mockStandings)),
                 status = HttpStatusCode.OK,
-                headers = headersOf(HttpHeaders.ContentType, "application/json")
+                headers = headersOf(HttpHeaders.ContentType, "application/json"),
             )
         }
         val apiClient = MatchplayApiServiceImpl(createMockClient(mockEngine))
@@ -115,16 +110,35 @@ class MatchplayApiServiceImplTest {
 
     @Test
     fun `getTournamentRounds success`() = runTest {
-        val mockRounds = listOf(
-            Round("r1", "Round 1", "completed", games = listOf(Game("g1", "Arena A", "a1", listOf("p1", "p2"), listOf(PlayerScore("p1", 1000L)), "completed"))),
-            Round("r2", "Round 2", "active")
-        )
+        val mockRounds =
+            listOf(
+                Round(
+                    "r1",
+                    "Round 1",
+                    "completed",
+                    games =
+                        listOf(
+                            Game(
+                                "g1",
+                                "Arena A",
+                                "a1",
+                                listOf("p1", "p2"),
+                                listOf(PlayerScore("p1", 1000L)),
+                                "completed",
+                            )
+                        ),
+                ),
+                Round("r2", "Round 2", "active"),
+            )
         val mockEngine = MockEngine { request ->
-            assertEquals("https://app.matchplay.events/api/tournaments/t1/rounds", request.url.toString())
+            assertEquals(
+                "https://app.matchplay.events/api/tournaments/t1/rounds",
+                request.url.toString(),
+            )
             respond(
                 content = ByteReadChannel(json.encodeToString(mockRounds)),
                 status = HttpStatusCode.OK,
-                headers = headersOf(HttpHeaders.ContentType, "application/json")
+                headers = headersOf(HttpHeaders.ContentType, "application/json"),
             )
         }
         val apiClient = MatchplayApiServiceImpl(createMockClient(mockEngine))
@@ -136,15 +150,16 @@ class MatchplayApiServiceImplTest {
 
     @Test
     fun `getTournamentRounds with status success`() = runTest {
-        val mockRounds = listOf(
-            Round("r2", "Round 2", "active")
-        )
+        val mockRounds = listOf(Round("r2", "Round 2", "active"))
         val mockEngine = MockEngine { request ->
-            assertEquals("https://app.matchplay.events/api/tournaments/t1/rounds?status=active", request.url.toString())
+            assertEquals(
+                "https://app.matchplay.events/api/tournaments/t1/rounds?status=active",
+                request.url.toString(),
+            )
             respond(
                 content = ByteReadChannel(json.encodeToString(mockRounds)),
                 status = HttpStatusCode.OK,
-                headers = headersOf(HttpHeaders.ContentType, "application/json")
+                headers = headersOf(HttpHeaders.ContentType, "application/json"),
             )
         }
         val apiClient = MatchplayApiServiceImpl(createMockClient(mockEngine))
@@ -155,13 +170,32 @@ class MatchplayApiServiceImplTest {
 
     @Test
     fun `getRoundDetails success`() = runTest {
-        val mockRound = Round("r1_detail", "Detailed Round 1", "active", games = listOf(Game("g1_detail", "Arena X", "ax", listOf("p3", "p4"), emptyList(), "active")))
+        val mockRound =
+            Round(
+                "r1_detail",
+                "Detailed Round 1",
+                "active",
+                games =
+                    listOf(
+                        Game(
+                            "g1_detail",
+                            "Arena X",
+                            "ax",
+                            listOf("p3", "p4"),
+                            emptyList(),
+                            "active",
+                        )
+                    ),
+            )
         val mockEngine = MockEngine { request ->
-            assertEquals("https://app.matchplay.events/api/rounds/r1_detail", request.url.toString())
+            assertEquals(
+                "https://app.matchplay.events/api/rounds/r1_detail",
+                request.url.toString(),
+            )
             respond(
                 content = ByteReadChannel(json.encodeToString(mockRound)),
                 status = HttpStatusCode.OK,
-                headers = headersOf(HttpHeaders.ContentType, "application/json")
+                headers = headersOf(HttpHeaders.ContentType, "application/json"),
             )
         }
         val apiClient = MatchplayApiServiceImpl(createMockClient(mockEngine))
@@ -175,7 +209,10 @@ class MatchplayApiServiceImplTest {
         val scoreSuggestion = ScoreSuggestion("g1", "p1", 12345L)
         val mockResponse = SuggestionResponse(true, "Score suggested successfully")
         val mockEngine = MockEngine { request ->
-            assertEquals("https://app.matchplay.events/api/rounds/r1/scores/suggest", request.url.toString())
+            assertEquals(
+                "https://app.matchplay.events/api/rounds/r1/scores/suggest",
+                request.url.toString(),
+            )
             assertEquals(HttpMethod.Post, request.method)
             // TODO: Add assertion for API Key header when implemented
             // assertEquals("YOUR_MATCHPLAY_API_KEY", request.headers["X-API-Key"])
@@ -184,7 +221,7 @@ class MatchplayApiServiceImplTest {
             respond(
                 content = ByteReadChannel(json.encodeToString(mockResponse)),
                 status = HttpStatusCode.OK,
-                headers = headersOf(HttpHeaders.ContentType, "application/json")
+                headers = headersOf(HttpHeaders.ContentType, "application/json"),
             )
         }
         val apiClient = MatchplayApiServiceImpl(createMockClient(mockEngine))
@@ -197,15 +234,16 @@ class MatchplayApiServiceImplTest {
     fun `suggestScore failure`() = runTest {
         val scoreSuggestion = ScoreSuggestion("g1", "p1", 12345L)
         val mockResponse = SuggestionResponse(false, "Invalid game ID")
-         val mockEngine = MockEngine { request ->
+        val mockEngine = MockEngine { request ->
             respond(
                 content = ByteReadChannel(json.encodeToString(mockResponse)),
                 status = HttpStatusCode.BadRequest, // Or other appropriate error code
-                headers = headersOf(HttpHeaders.ContentType, "application/json")
+                headers = headersOf(HttpHeaders.ContentType, "application/json"),
             )
         }
         val apiClient = MatchplayApiServiceImpl(createMockClient(mockEngine))
-        // Depending on how Ktor handles non-2xx responses with body, this might throw or return the parsed error
+        // Depending on how Ktor handles non-2xx responses with body, this might throw or return the
+        // parsed error
         // For this example, let's assume it parses the error body for certain client errors
         try {
             val result = apiClient.suggestScore("r1", scoreSuggestion)

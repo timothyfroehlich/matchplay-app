@@ -8,26 +8,25 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinSerialization)
+    alias(libs.plugins.ktfmt)
 }
 
 kotlin {
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_21)
-        }
+        compilerOptions { jvmTarget.set(JvmTarget.JVM_21) }
     }
-//
-//    listOf(
-//        iosX64(),
-//        iosArm64(),
-//        iosSimulatorArm64()
-//    ).forEach { iosTarget ->
-//        iosTarget.binaries.framework {
-//            baseName = "ComposeApp"
-//            isStatic = true
-//        }
-//    }
+    //
+    //    listOf(
+    //        iosX64(),
+    //        iosArm64(),
+    //        iosSimulatorArm64()
+    //    ).forEach { iosTarget ->
+    //        iosTarget.binaries.framework {
+    //            baseName = "ComposeApp"
+    //            isStatic = true
+    //        }
+    //    }
 
     jvm("desktop")
 
@@ -59,13 +58,13 @@ kotlin {
             implementation(libs.koin.core)
         }
         val commonTest by getting {
-             dependencies {
-                 implementation(kotlin("test")) // Or libs.kotlin.test
-                 implementation(libs.koin.test)
-                 implementation(libs.ktor.client.mock) // Added Ktor mock engine
-                 implementation(libs.mockk)           // Added MockK
-                 implementation(libs.kotlinx.coroutines.test) // For test dispatchers
-             }
+            dependencies {
+                implementation(kotlin("test")) // Or libs.kotlin.test
+                implementation(libs.koin.test)
+                implementation(libs.ktor.client.mock) // Added Ktor mock engine
+                implementation(libs.mockk) // Added MockK
+                implementation(libs.kotlinx.coroutines.test) // For test dispatchers
+            }
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
@@ -87,25 +86,15 @@ android {
         versionCode = 1
         versionName = "1.0"
     }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-        }
-    }
+    packaging { resources { excludes += "/META-INF/{AL2.0,LGPL2.1}" } }
+    buildTypes { getByName("release") { isMinifyEnabled = false } }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
     }
 }
 
-dependencies {
-    debugImplementation(compose.uiTooling)
-}
+dependencies { debugImplementation(compose.uiTooling) }
 
 compose.desktop {
     application {
@@ -118,3 +107,5 @@ compose.desktop {
         }
     }
 }
+
+ktfmt { kotlinLangStyle() }

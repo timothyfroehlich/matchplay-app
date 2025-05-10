@@ -42,6 +42,7 @@ Always use `design.md` as context.
 
 * **TDD:** Test-Driven Development is mandatory. Tests should precede implementation.
 * **Testing Focus:** Heavy emphasis on unit tests in `commonTest`. Use exported Matchplay JSON data for mock API responses.
+* **Code Style:** All Kotlin code should be formatted using ktfmt with the `kotlinlang` style.
 
 ## Core Functionality & Features
 

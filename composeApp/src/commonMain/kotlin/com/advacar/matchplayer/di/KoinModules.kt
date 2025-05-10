@@ -4,30 +4,32 @@ import com.advacar.matchplayer.data.remote.MatchplayApiService
 import com.advacar.matchplayer.data.remote.MatchplayApiServiceImpl
 import com.advacar.matchplayer.data.repository.TournamentRepository
 import com.advacar.matchplayer.data.repository.TournamentRepositoryImpl
-import io.ktor.client.* // KEEP: For HttpClient
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation // KEEP: For ContentNegotiation
-import io.ktor.client.plugins.logging.Logging // ADDED: For Ktor Logging feature
-import io.ktor.client.plugins.logging.Logger // ADDED: For Ktor Logger interface
-import io.ktor.client.plugins.logging.LogLevel // ADDED: For Ktor LogLevel
-import io.ktor.client.plugins.logging.DEFAULT // ADDED: For Ktor DEFAULT logger
-import io.ktor.serialization.kotlinx.json.json // KEEP: For json serialization
-import kotlinx.serialization.json.Json // KEEP: For Json configuration
-import org.koin.dsl.module // KEEP: For Koin module
+import io.ktor.client.HttpClient
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.logging.DEFAULT
+import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logger
+import io.ktor.client.plugins.logging.Logging
+import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.json.Json
+import org.koin.dsl.module
 
 val networkModule = module {
     single<HttpClient> {
         HttpClient(httpClientEngineFactory()) {
             install(ContentNegotiation) {
-                json(Json {
-                    prettyPrint = true
-                    isLenient = true
-                    ignoreUnknownKeys = true
-                })
+                json(
+                    Json {
+                        prettyPrint = true
+                        isLenient = true
+                        ignoreUnknownKeys = true
+                    }
+                )
             }
 
             install(Logging) { // Logging feature installation
                 logger = Logger.DEFAULT // Use Ktor's default logger
-                level = LogLevel.ALL    // Log all messages
+                level = LogLevel.ALL // Log all messages
             }
 
             // Default request configuration can be set here if needed
@@ -40,7 +42,9 @@ val networkModule = module {
 }
 
 val repositoryModule = module {
-    single<TournamentRepository> { TournamentRepositoryImpl(get()) } // Koin will inject MatchplayApiService
+    single<TournamentRepository> {
+        TournamentRepositoryImpl(get())
+    } // Koin will inject MatchplayApiService
 }
 
 // Combined app modules for platform entry points

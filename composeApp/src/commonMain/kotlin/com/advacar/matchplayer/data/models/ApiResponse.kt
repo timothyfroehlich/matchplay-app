@@ -6,8 +6,4 @@ import kotlinx.serialization.Serializable
 // For now, we'll assume direct list/object returns.
 
 // Example of a success response for POST, if the API returns more than just a status code
-@Serializable
-data class SuggestionResponse(
-    val success: Boolean,
-    val message: String? = null
-)
+@Serializable data class SuggestionResponse(val success: Boolean, val message: String? = null)
