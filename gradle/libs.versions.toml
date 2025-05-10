@@ -1,8 +1,8 @@
 [versions]
 agp = "8.10.0"
-android-compileSdk = "35"
+android-compileSdk = "36"
 android-minSdk = "24"
-android-targetSdk = "35"
+android-targetSdk = "36"
 androidx-activityCompose = "1.10.1"
 androidx-appcompat = "1.7.0"
 androidx-constraintlayout = "2.2.1"
@@ -11,14 +11,15 @@ androidx-espresso-core = "3.6.1"
 androidx-lifecycle = "2.8.4"
 androidx-material = "1.12.0"
 androidx-test-junit = "1.2.1"
-compose-multiplatform = "1.7.3"
+compose-multiplatform = "1.8.0"
 junit = "4.13.2"
 kotlin = "2.1.20"
-kotlinx-coroutines = "1.8.0" # Updated to a more recent version
-kotlinx-serialization = "1.6.3"
-ktor = "2.3.10"
-koin = "3.5.6" # Koin core version
-koin-compose = "1.1.5" # Koin compose specific version
+kotlinx-coroutines = "1.10.2" # Updated to a more recent version
+kotlinx-serialization = "1.8.1"
+ktor = "3.1.3"
+mockk = "1.14.2" # Added Mockk version
+koin = "4.0.4" # Koin core version
+koin-compose = "4.0.4" # Koin compose specific version
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -41,11 +42,14 @@ ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-conte
 ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor-client-okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }
 ktor-client-java = { group = "io.ktor", name = "ktor-client-java", version.ref = "ktor" }
-# ktor-client-cio = { group = "io.ktor", name = "ktor-client-cio", version.ref = "ktor" } # Alternative JVM engine
+ktor-client-logging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" } # Added Ktor logging client
+ktor-client-mock = { group = "io.ktor", name = "ktor-client-mock", version.ref = "ktor" } # Added Ktor mock client
 koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
 koin-test = { group = "io.insert-koin", name = "koin-test", version.ref = "koin" }
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 koin-compose = { group = "io.insert-koin", name = "koin-compose", version.ref = "koin-compose" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" } # Added Mockk
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" } # Added coroutines test
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
