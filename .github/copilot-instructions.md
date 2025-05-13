@@ -46,7 +46,7 @@ Always use `design.md` as context.
 
 ## Core Functionality & Features
 
-* **API Interaction:** Communicates with the Matchplay.events REST API.
+* **API Interaction:** Communicates with the Matchplay.events REST API. All API client implementations must be based on the `matchplay.openapi.yaml` specification.
 * **Features:**
   * Tournament Discovery (nearby, registered).
   * Tournament Details View (focus on "Group Match Play" format).
