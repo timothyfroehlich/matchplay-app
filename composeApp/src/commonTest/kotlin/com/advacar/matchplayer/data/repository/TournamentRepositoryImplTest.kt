@@ -90,29 +90,4 @@ class TournamentRepositoryImplTest {
         assertEquals(mockRounds, result.getOrNull())
         coVerify(exactly = 1) { mockApiService.getTournamentRounds("t1", "active") }
     }
-
-    @Test
-    fun `getRoundDetails success`() = runTest {
-        val mockRound = Round("r1", "Round 1", "active")
-        coEvery { mockApiService.getRoundDetails("r1") } returns mockRound
-
-        val result = repository.getRoundDetails("r1")
-
-        assertTrue(result.isSuccess)
-        assertEquals(mockRound, result.getOrNull())
-        coVerify(exactly = 1) { mockApiService.getRoundDetails("r1") }
-    }
-
-    @Test
-    fun `suggestScore success`() = runTest {
-        val suggestion = ScoreSuggestion("g1", "p1", 100L)
-        val mockResponse = SuggestionResponse(true, "Success")
-        coEvery { mockApiService.suggestScore("r1", suggestion) } returns mockResponse
-
-        val result = repository.suggestScore("r1", suggestion)
-
-        assertTrue(result.isSuccess)
-        assertEquals(mockResponse, result.getOrNull())
-        coVerify(exactly = 1) { mockApiService.suggestScore("r1", suggestion) }
-    }
 }

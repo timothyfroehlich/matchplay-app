@@ -44,23 +44,4 @@ class TournamentRepositoryImpl(private val apiService: MatchplayApiService) : To
             Result.failure(e)
         }
     }
-
-    override suspend fun getRoundDetails(roundId: String): Result<Round> {
-        return try {
-            Result.success(apiService.getRoundDetails(roundId))
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
-
-    override suspend fun suggestScore(
-        roundId: String,
-        scoreSuggestion: ScoreSuggestion,
-    ): Result<SuggestionResponse> {
-        return try {
-            Result.success(apiService.suggestScore(roundId, scoreSuggestion))
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
 }

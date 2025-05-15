@@ -21,11 +21,4 @@ interface TournamentRepository {
         tournamentId: String,
         status: String? = null,
     ): Result<List<Round>>
-
-    suspend fun getRoundDetails(roundId: String): Result<Round>
-
-    suspend fun suggestScore(
-        roundId: String,
-        scoreSuggestion: ScoreSuggestion,
-    ): Result<SuggestionResponse>
 }

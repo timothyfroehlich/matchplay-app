@@ -29,13 +29,4 @@ interface MatchplayApiService {
      * (e.g., "active", "completed").
      */
     suspend fun getTournamentRounds(tournamentId: String, status: String? = null): List<Round>
-
-    /**
-     * Fetches details for a specific round. This might be needed if getTournamentRounds doesn't
-     * provide enough detail for active games.
-     */
-    suspend fun getRoundDetails(roundId: String): Round
-
-    /** Submits a score suggestion for a game. Requires authentication. */
-    suspend fun suggestScore(roundId: String, scoreSuggestion: ScoreSuggestion): SuggestionResponse
 }

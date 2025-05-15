@@ -37,22 +37,4 @@ class MatchplayApiServiceImpl(private val httpClient: HttpClient) : MatchplayApi
             }
             .body()
     }
-
-    override suspend fun getRoundDetails(roundId: String): Round {
-        return httpClient.get("$baseUrl/rounds/$roundId").body()
-    }
-
-    override suspend fun suggestScore(
-        roundId: String,
-        scoreSuggestion: ScoreSuggestion,
-    ): SuggestionResponse {
-        return httpClient
-            .post("$baseUrl/rounds/$roundId/scores/suggest") {
-                contentType(ContentType.Application.Json)
-                setBody(scoreSuggestion)
-                // TODO: Add API Key header for authentication if required by this endpoint
-                // headers.append("X-API-Key", "YOUR_MATCHPLAY_API_KEY")
-            }
-            .body()
-    }
 }
