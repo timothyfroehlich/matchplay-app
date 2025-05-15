@@ -28,4 +28,5 @@ dependencyResolutionManagement {
     }
 }
 
-include(":composeApp")
+// include(":composeApp")  // Disabled while we get the API working
+include(":matchplayApi")
