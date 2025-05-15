@@ -51,6 +51,7 @@ koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = 
 koin-compose = { group = "io.insert-koin", name = "koin-compose", version.ref = "koin-compose" }
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" } # Added Mockk
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" } # Added coroutines test
+ktor-client-cio = { module = "io.ktor:ktor-client-cio", version = "2.3.9" } # Add Ktor CIO engine
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

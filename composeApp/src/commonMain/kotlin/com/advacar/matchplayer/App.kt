@@ -18,13 +18,15 @@ import matchplayer.composeapp.generated.resources.Res
 import matchplayer.composeapp.generated.resources.compose_multiplatform
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import com.matchplay.client.auth.ApiKeyInputScreen
 
 @Composable
 @Preview
 fun App() {
     MaterialTheme {
-        var showContent by remember { mutableStateOf(false) }
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+            ApiKeyInputScreen()
+            var showContent by remember { mutableStateOf(false) }
             Button(onClick = { showContent = !showContent }) { Text("Click me!") }
             AnimatedVisibility(showContent) {
                 val greeting = remember { Greeting().greet() }

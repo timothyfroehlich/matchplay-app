@@ -2,6 +2,7 @@ package com.advacar.matchplayer
 
 import android.app.Application
 import com.advacar.matchplayer.di.commonModule
+import com.matchplay.client.di.platformModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -17,7 +18,7 @@ class MatchPlayerApplication : Application() {
             // Declare Android context
             androidContext(this@MatchPlayerApplication)
             // Declare modules to use
-            modules(commonModule) // Add other platform-specific modules if needed
+            modules(commonModule, platformModule())
         }
     }
 }
