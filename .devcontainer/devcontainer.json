@@ -10,11 +10,21 @@
       },
       "extensions": [
         "fwcd.kotlin",
-        "esafirm.kotlin-formatter",
         "ms-androidtools.vscode-android",
-        "JetBrains.compose-desktop-extension-pack"
+        "JetBrains.compose-desktop-extension-pack",
+        "GitHub.codespaces",
+        "mathiasfrohlich.kotlin-test-runner"
       ]
     }
   },
-  "postCreateCommand": "./gradlew --no-daemon --version"
+  "postCreateCommand": "./gradlew --no-daemon --version",
+  "onCreateCommand": "chmod +x ./gradlew && ./gradlew --no-daemon --version",
+  "updateContentCommand": "./gradlew --refresh-dependencies",
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/java:1": {
+      "version": "21"
+    }
+  }
 }
