@@ -4,6 +4,14 @@ plugins {
     alias(libs.plugins.kotlinSerialization)
 }
 
+// Load local properties for API testing
+val localProperties = java.util.Properties().apply {
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        load(localPropertiesFile.inputStream())
+    }
+}
+
 dependencies {
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.serialization.json)
@@ -15,4 +23,16 @@ dependencies {
     testImplementation(kotlin("test"))
     testImplementation(libs.ktor.client.mock)
     testImplementation(libs.kotlinx.coroutines.test)
+}
+
+tasks.test {
+    useJUnitPlatform()
+
+    // Pass API key to tests
+    systemProperty("matchplay.apiKey", localProperties.getProperty("matchplay.apiKey", ""))
+
+    // Allow filtering integration tests
+    if (!project.hasProperty("runIntegration")) {
+        exclude("**/LiveApiTest.class")
+    }
 }
